@@ -1,6 +1,6 @@
 <template>
-    <Link href="/listing">Listings</Link>&nbsp;
-    <Link href="/listing/create">New Listing</Link>
+    <!-- <Link href="/listing">Listings</Link>&nbsp;
+    <Link href="/listing/create">New Listing</Link> -->
     <!-- <div>The Page with time{{ timer }}</div> -->
 
     <header
@@ -16,18 +16,26 @@
                 >
                     <Link :href="route('listing.index')"> LaraZillow </Link>
                 </div>
-                <div>
-                    <Link
-                        :href="route('listing.create')"
-                        class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium p-2 rounded-md"
-                    >
+                <div v-if="user" class="flex items-center gap-4">
+                    <div class="text-sm text-gray-500">{{ user.name }}</div>
+                    <Link :href="route('listing.create')" class="btn-primary">
                         +New Listing
                     </Link>
+                    <div>
+                        <Link :href="route('logout')" method="delete"
+                            >Logout</Link
+                        >
+                    </div>
+                </div>
+                <div v-else class="flex items-center gap-2">
+                    <Link :href="route('user-account.create')">Register</Link>
+
+                    <Link :href="route('login')">Sign-In</Link>
                 </div>
             </nav>
         </div>
     </header>
-    <main class="container mx-auto p-4">
+    <main class="container mx-auto p-4 w-full">
         <div
             v-if="flashSuccess"
             class="mb-4 border rounded-md shadow-sm border-green-800 bg-green-50 dark:bg-green-900"
@@ -49,7 +57,8 @@ import { Link, usePage } from "@inertiajs/vue3";
 // const y = computed(() => x.value * 2);
 // page.props.value.flash.success
 const page = usePage();
-const flashSuccess = computed(() => page.props.flashSuccess);
+const flashSuccess = computed(() => page.props.flash.success);
+const user = computed(() => page.props.user);
 // import { ref } from "vue";
 // const timer = ref(0);
 // setInterval(() => timer.value++, (setTimeout = 1000));
